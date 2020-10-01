@@ -4,6 +4,11 @@
 
 @implementation ABI39_0_0EXDisabledRedBox
 
++ (NSString *)moduleName
+{
+  return @"RedBox";
+}
+
 - (void)showError:(NSError *)message {}
 - (void)showErrorMessage:(NSString *)message {}
 - (void)showErrorMessage:(NSString *)message withDetails:(NSString *)details {}
