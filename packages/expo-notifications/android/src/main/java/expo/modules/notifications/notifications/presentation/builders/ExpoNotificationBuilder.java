@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -15,7 +13,6 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-
 import expo.modules.notifications.notifications.enums.NotificationPriority;
 import expo.modules.notifications.notifications.interfaces.NotificationBuilder;
 import expo.modules.notifications.notifications.model.NotificationAction;
@@ -44,7 +41,6 @@ public class ExpoNotificationBuilder extends ChannelAwareNotificationBuilder {
   protected NotificationCompat.Builder createBuilder() {
     NotificationCompat.Builder builder = super.createBuilder();
     builder.setSmallIcon(getIcon());
-    builder.setLargeIcon(getLargeIcon());
     builder.setPriority(getPriority());
 
     NotificationContent content = getNotificationContent();
@@ -231,26 +227,6 @@ public class ExpoNotificationBuilder extends ChannelAwareNotificationBuilder {
 
     // By default let's show the notification
     return NotificationCompat.PRIORITY_HIGH;
-  }
-
-  /**
-   * The method first tries to get the large icon from the manifest's meta-data {@link #META_DATA_DEFAULT_ICON_KEY}.
-   * If a custom setting is not found, the method falls back to null.
-   *
-   * @return Bitmap containing larger icon or null if a custom settings was not provided.
-   */
-  @Nullable
-  protected Bitmap getLargeIcon() {
-    try {
-      ApplicationInfo ai = getContext().getPackageManager().getApplicationInfo(getContext().getPackageName(), PackageManager.GET_META_DATA);
-      if (ai.metaData.containsKey(META_DATA_LARGE_ICON_KEY)) {
-        int resourceId = ai.metaData.getInt(META_DATA_LARGE_ICON_KEY);
-        return BitmapFactory.decodeResource(getContext().getResources(), resourceId);
-      }
-    } catch (PackageManager.NameNotFoundException | ClassCastException e) {
-      Log.e("expo-notifications", "Could not have fetched large notification icon.");
-    }
-    return null;
   }
 
   /**
